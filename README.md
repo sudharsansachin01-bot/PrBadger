@@ -1,188 +1,77 @@
-# PRBadger (prbadger.in) — Product Concept & Vision
+# PRBadger (`prbadger.in`)
 
-> **"The autonomous security and architecture review engine for the AI vibe-coding era."**
+> **The Instant Security & Architecture Vibe Check for AI-Generated Web Apps**
 
----
-
-## 1. Executive Summary
-
-**PRBadger** is an automated code security and architectural audit platform built specifically for modern edge-first web applications and AI-generated codebases.
-
-As tools like **Cursor, Lovable, Claude Code, GitHub Copilot, v0, and Bolt** empower developers to build full-stack applications at 10x velocity, a critical new problem has emerged: **AI writes code that compiles cleanly and passes syntax checks, but harbors catastrophic architectural, billing, and security blindspots.**
-
-Traditional static analysis tools (ESLint, Prettier, SonarQube) only check syntactic structure and outdated CVE databases. They are completely blind to modern edge runtimes, unbatched database read explosions, client-side secret leakage, and serverless isolate boundaries.
-
-**PRBadger bridges this gap** by combining:
-1. **Zero-install instant audits** via deployed URL or repository analysis.
-2. **Multi-model AI reasoning cascades** (Cloudflare Workers AI, Google Gemini 2.5 Flash, OpenAI GPT-4o) trained on real-world edge architectures.
-3. **Deterministic Grounding Gate** that verifies every finding against actual bundle tokens to ensure **zero hallucinations**.
-4. **Actionable Vibe Scores & Live GitHub Badges** that give developers and their users verifiable trust.
+![PRBadger - How It Works](./prbadger-how-it-works.png)
 
 ---
 
-## 2. The Problem Landscape
+## 1. Product Concept
 
-### 2.1 The Rise of "Vibe Coding"
-The software industry has shifted from manual line-by-line coding to prompt-driven declarative engineering ("vibe coding"). Developers describe what they want, and LLMs generate complex React components, Cloudflare Worker routes, and database schemas.
+### What is PRBadger?
+Think of **PRBadger** as **Google Lighthouse, but for Code Security and Cloudflare Edge Architecture.**
 
-### 2.2 The Silent Traps of AI-Generated Code
-While AI code works on first click, it routinely creates:
-* **Cloudflare D1 & Database Billing Traps**: AI models frequently construct unindexed queries and $N+1$ loops inside request handlers that read millions of database rows, exhausting free tiers and generating shock bills within days.
-* **Isolate Memory & CPU Overruns**: Serverless edge environments have strict memory (128MB) and CPU time limits. AI code commonly includes unoptimized memory buffers and unstreamed responses that crash edge workers under moderate traffic.
-* **Client-Side Secret & Token Leaks**: LLMs often place admin keys, Supabase service-role keys, or private webhook secrets into client-bundled frontend code (`VITE_*` / `NEXT_PUBLIC_*`).
-* **Broken Authorization Boundaries**: AI models build working UI flows but omit server-side authorization checks on background mutation routes.
-* **Security & Injection Holes**: Unsanitized HTML rendering, insecure redirect handling, CSV formula injections, and delimiter breakout vulnerabilities in downstream LLM prompts.
+With the rise of "vibe coding" tools like **Cursor, Lovable, Claude Code, GitHub Copilot, and Bolt**, developers can build and ship full-stack web applications in hours instead of months. 
 
-### 2.3 Why Existing Tools Fail
-| Dimension | Traditional Linters (ESLint, Prettier) | Legacy SAST (SonarQube, Snyk) | PRBadger |
-|---|---|---|---|
-| **Setup Barrier** | Requires npm install, configuration files | Complex enterprise CI/CD setup, heavy agents | **Zero setup: Instant URL or repository scan** |
-| **Edge Runtime Awareness** | ❌ None | ❌ Outdated rules for legacy VM/Docker containers | **✅ Native awareness of Cloudflare Workers, D1, KV, Vectorize** |
-| **Billing & Quota Traps** | ❌ None | ❌ None | **✅ Detects $N+1$ read loops and billing explosion risks** |
-| **AI Hallucination Filtering** | N/A | N/A | **✅ Grounding Gate filters out non-existent token flags** |
-| **Speed to Value** | Minutes to setup | Hours/Days to integrate | **Under 15 seconds** |
+However, AI models routinely generate code that **looks perfect and compiles cleanly**, but contains hidden, dangerous traps:
+
+* 💥 **Leaked Secrets in Client Bundles:** Private API keys (Stripe, OpenAI, Supabase Service Role) accidentally exposed in frontend JavaScript.
+* 💸 **Database Billing Blowouts:** Unindexed queries and $N+1$ loops in Cloudflare D1 that exhaust monthly read limits within days.
+* ⚡ **Edge Isolate Crashes:** Code that exceeds Cloudflare Workers' strict 128MB memory or CPU limits under real traffic.
+* 🔓 **Missing Authorization Boundaries:** Mutation routes created without server-side permission checks.
+
+**PRBadger solves this with a zero-friction, 15-second audit:** You paste your website or staging URL, and PRBadger automatically analyzes the live application, delivering an instant **Vibe Score (0–100)** and a verified **GitHub README Badge**.
 
 ---
 
-## 3. Product Value Proposition & Solution
-
-### 3.1 Core Promise
-> *"Deploy with confidence. Know within 15 seconds whether your AI-generated app is secure, cost-optimized, and production-ready."*
-
-### 3.2 The Three Architectural Pillars
-
-```
-+-----------------------------------------------------------------------+
-|                              PRBadger                                 |
-+-----------------------------------------------------------------------+
-        |                                   |
-        v                                   v
-[1. Multi-Asset Extraction]       [2. Deterministic Static Scanner]
-  - Bundle JavaScript analysis       - Hardcoded secret signatures
-  - Response headers & CORS          - SSRF & redirect loop guards
-  - HTML & hydration boundaries      - Known CVE & malicious patterns
-        |                                   |
-        +-----------------+-----------------+
-                          |
-                          v
-        [3. Multi-Provider AI Cascade Engine]
-          - Primary: Cloudflare Workers AI (Llama 3.3 / DeepSeek-R1)
-          - Secondary: Google Gemini (Gemini 2.5 Flash)
-          - Fallback: OpenAI (GPT-4o)
-                          |
-                          v
-        [4. Grounding Gate (Anti-Hallucination)]
-          - Verifies identified code identifiers exist in real assets
-          - Discards ungrounded or speculative hallucinations
-                          |
-                          v
-  +-----------------------------------------------+
-  |  Final Vibe Score (0-100) + Remediation Steps |
-  +-----------------------------------------------+
-```
-
----
-
-## 4. Key Product Features
-
-### 4.1 Instant Vibe Check Scanner
-* Enter any public website or staging URL (e.g. `https://my-app.pages.dev`).
-* Performs full asset discovery (HTML, scripts, stylesheets, API endpoints).
-* Generates an actionable **Vibe Score (0–100)** with letter grades (**A+**, **B**, **C**, **F**).
-* Displays categorized findings: **Critical**, **High**, **Medium**, **Low**, and **Quality**.
-
-### 4.2 Dynamic Live GitHub Badges
-* Generates dynamic SVG shields for GitHub `README.md` files:
-  ```markdown
-  [![PRBadger Vibe Check](https://www.prbadger.in/badge/my-saas-app)](https://www.prbadger.in)
-  ```
-* Shows live security and architectural status to users, investors, and open-source contributors.
-
-### 4.3 Deep Cloudflare & Edge Semantic Checks
-* **D1 Query Optimization**: Identifies missing indexes and row-read traps.
-* **Worker Isolate Safety**: Analyzes synchronous bottlenecks and payload size limits.
-* **Security Headers**: Verifies CSP, HSTS, X-Frame-Options, and Referrer-Policy.
-* **Prompt Injection Defense**: Evaluates AI-facing endpoints for delimiter breakouts.
-
-### 4.4 Human-in-the-Loop Remediation Pilot ("Need Our Experts?")
-* For founders and engineering teams who want direct fixes:
-* Submit the audit report directly to the PRBadger senior engineering team.
-* Human experts deliver verified pull requests with code fixes and performance optimizations within 24–48 hours.
-
-### 4.5 Full-Screen CMS & Engineering Knowledge Hub
-* Integrated admin dashboard with a dedicated full-screen content management system.
-* Publishes in-depth engineering teardowns, Cloudflare best practices, and AI security guides.
-* Optimized for **Google SERP** and **AEO (Answer Engine Optimization)** for LLM discovery (Perplexity, ChatGPT, Google AI Overviews).
-
----
-
-## 5. Target Customer Segments & Personas
-
-### Persona A: "The AI-First Solo Founder" (Alex)
-* **Profile**: Solo engineer or non-technical founder building SaaS products using Cursor, v0, Lovable, or Claude Code.
-* **Pain Points**: Builds fast, but is terrified of database billing spikes, customer data leaks, or getting hacked on launch day.
-* **Value Received**: Reassurance and actionable remediation steps before launching on Product Hunt or Hacker News.
-
-### Persona B: "The Engineering Lead at High-Growth Startup" (Priya)
-* **Profile**: Managing 5–15 engineers who are all utilizing AI coding assistants.
-* **Pain Points**: Code review volume has doubled; junior developers push syntactically clean PRs that hide subtle architectural bugs.
-* **Value Received**: Automated pre-merge PR scans that catch edge runtime bugs and enforce security standards before deployment.
-
-### Persona C: "The Cloudflare & Serverless Architect" (David)
-* **Profile**: Senior consultant or devops engineer building serverless microservices on Cloudflare Workers, Pages, and Supabase.
-* **Pain Points**: Lack of specialized tooling that understands worker memory limits, D1 query quotas, and edge bindings.
-* **Value Received**: First-class tooling designed explicitly around modern edge infrastructure.
-
----
-
-## 6. Business & Monetization Model
-
-### 1. Free Community Tier (Freemium Hook)
-* Unlimited public URL scans.
-* Basic Vibe Score & summary report.
-* Dynamic GitHub README badge.
-* Access to community knowledge base.
-
-### 2. Pro Developer ($19 / month)
-* Detailed code remediation snippets and diffs.
-* Private scans (unindexed/staging environments).
-* Automated scheduled scans (daily / weekly health checks).
-* Downloadable executive PDF reports.
-* Email & webhook alert notifications on regression.
-
-### 3. Team & CI/CD ($79 / month)
-* GitHub Action integration: Automated checks on every Pull Request.
-* Slack & Discord webhook alerts.
-* Team member seat management.
-* Priority multi-model AI cascade compute.
-
-### 4. Enterprise & Managed Remediation Pilot ($499+ / project)
-* Dedicated review by senior Cloudflare & AI security researchers.
-* Direct code fixes via pull request.
-* Custom architectural hardening (Cloudflare Zero Trust, D1 migrations, rate limiting).
-
----
-
-## 7. Competitive Moat
-
-1. **Edge-Native Semantics**: Built from the ground up on Cloudflare Workers; understands serverless edge execution models better than general-purpose linters.
-2. **Grounding Gate Guarantee**: Eliminates the #1 complaint developers have with AI security tools—**false-positive hallucinated vulnerabilities**.
-3. **Multi-Model Resilience**: Automated real-time cascade across Cloudflare Workers AI, Gemini, and OpenAI ensures zero downtime and cost efficiency.
-4. **Zero-Friction Adoption**: Developers don't need to install an npm package, give repository write access, or run Docker containers. They just paste a URL.
-
----
-
-## 8. Product Roadmap
+## 2. How It Works
 
 ```mermaid
 flowchart LR
-    A["Phase 1: Foundation<br/>- URL Scanner<br/>- Multi-AI Cascade<br/>- D1 Architecture Rules"] --> B["Phase 2: Growth & CMS<br/>- GitHub Badges<br/>- Full-Screen Admin CMS<br/>- Pilot Expert Service"]
-    B --> C["Phase 3: Automation<br/>- GitHub PR App<br/>- CI/CD Action<br/>- Webhook Monitoring"]
-    C --> D["Phase 4: Auto-Fix Engine<br/>- 1-Click Code Patching<br/>- Cursor / VS Code Plugin<br/>- SOC2 / Edge Compliance"]
+    A["1. Enter App URL<br/>(e.g. myapp.pages.dev)"] --> B["2. Asset Discovery<br/>(Scripts, Headers, HTML)"]
+    B --> C["3. Dual-Engine Analysis"]
+    
+    subgraph C ["Dual-Engine Analysis"]
+        C1["Deterministic Static Check<br/>(Secrets, SSRF, Headers)"]
+        C2["Multi-AI Cascade<br/>(Workers AI + Gemini + OpenAI)"]
+    end
+
+    C --> D["4. Grounding Gate<br/>(Eliminates Hallucinations)"]
+    D --> E["5. Results & Badges<br/>- Vibe Score (0-100)<br/>- Live GitHub Badge<br/>- Remediation Fixes"]
 ```
 
-* **Phase 1 (Completed)**: Core scanning engine, multi-provider AI cascade, Grounding Gate, and D1 database integration.
-* **Phase 2 (Completed)**: Dynamic README badges, dedicated full-screen Blog/CMS management, pilot lead capture, and DMCA protection.
-* **Phase 3 (Next)**: Official GitHub Action and PR Reviewer App that leaves inline comments on pull requests.
-* **Phase 4 (Future)**: 1-click automated pull request generation for identified vulnerabilities and an official IDE extension (Cursor / VS Code).
+---
 
+### Step 1: Zero-Install Instant Scan
+* No npm packages, no CLI installations, and no repository permissions needed.
+* Simply enter any deployed web URL (e.g., `https://myapp.pages.dev` or `https://my-saas.com`).
+* PRBadger extracts script bundles, hydration boundaries, response headers, and endpoint routes.
+
+### Step 2: Dual-Engine Security & Architecture Analysis
+PRBadger runs a two-tier evaluation engine:
+1. **Deterministic Static Engine:** Instantly scans for hardcoded secrets, dangerous functions (`eval`), insecure CORS policies, missing security headers, and SSRF redirect loops.
+2. **Multi-Model AI Intelligence Cascade:** An autonomous AI pipeline that analyzes edge architecture traps and logic flaws. It automatically routes queries across **Cloudflare Workers AI**, **Google Gemini**, and **OpenAI** with built-in failover.
+
+### Step 3: The Grounding Gate (0% Hallucinations)
+* A common issue with AI code reviews is "hallucinated" vulnerabilities.
+* PRBadger's **Grounding Gate** cross-references every AI finding against the actual identifiers and tokens in your code.
+* If a flagged variable, function, or secret does not exist in the real codebase, **it is automatically dropped**. You only see verified, grounded findings.
+
+### Step 4: Vibe Score & Live GitHub Badges
+* Generates an actionable **Vibe Score (0–100)** with letter grades (**A+**, **B**, **C**, **F**).
+* Provides a dynamic SVG badge ready to embed in your GitHub README:
+  ```markdown
+  [![PRBadger Vibe Check](https://www.prbadger.in/badge/my-app)](https://www.prbadger.in)
+  ```
+* Categorizes issues by severity (**Critical**, **High**, **Medium**, **Low**, and **Quality**) with exact code explanations.
+
+---
+
+## 3. Quick Summary
+
+| Stage | What Happens | Result |
+|---|---|---|
+| **Input** | Paste any website or staging URL | Instant headless asset extraction |
+| **Analysis** | Static pattern scanner + Multi-LLM cascade | Flags security holes, billing traps & memory limits |
+| **Verification** | Grounding Gate filters out false positives | 100% verified, hallucination-free findings |
+| **Output** | Interactive audit report + GitHub badge | Actionable fixes & proof of security for users |
